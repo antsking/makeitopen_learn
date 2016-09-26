@@ -4,6 +4,6 @@
 
 import {AppRegistry} from 'react-native';
 
-var LoginScreen = require('./js/login/LoginScreen')
+const setup = require('./js/setup');
 
-AppRegistry.registerComponent('MediaMonitor', () => LoginScreen);
+AppRegistry.registerComponent('MediaMonitor', setup);

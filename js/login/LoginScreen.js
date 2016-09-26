@@ -15,6 +15,8 @@ import {
     TouchableHighlight
 } from 'react-native';
 
+var { loginAction } = require('../actions/login');
+
 class LoginScreen extends Component {
     constructor(props){
         super(props)
@@ -22,15 +24,10 @@ class LoginScreen extends Component {
             username:'',
             password:''
         }
-
     }
 
     componentDidMount(){
         StatusBar.setBarStyle('light-content',true);
-    }
-
-    _onPressLoginButton(){
-
     }
 
     _onPressForgotPasswordButton(){
@@ -74,8 +71,8 @@ class LoginScreen extends Component {
                     />
                     <TouchableHighlight
                         style={styles.loginButton}
-                        onPress={this._onPressLoginButton}>
-                        <Text style={styles.loginText}>Sign-in</Text>
+                        onPress={() => this.props.onLoginButtonClick(1,'Evan')}>
+                        <Text style={styles.loginText}>{this.props.isUserLoggedIn ? 'Sign-out' : 'Sign-in'}</Text>
                     </TouchableHighlight>
                 </ScrollView>
                 <TouchableHighlight
@@ -139,5 +136,11 @@ const styles = StyleSheet.create({
         color:'white'
     },
 });
+
+LoginScreen.propTypes = {
+    isUserLoggedIn:React.PropTypes.bool,
+    onLoginButtonClick:React.PropTypes.func
+};
+
 
 module.exports = LoginScreen;
