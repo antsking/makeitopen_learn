@@ -15,6 +15,7 @@ const initialState ={
 function user(state = initialState, action) {
     if (action.type == LOGIN){
         return{
+            ...state,
             isLoggedIn: true,
             id: action.id,
             name: action.name

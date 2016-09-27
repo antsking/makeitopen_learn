@@ -30,6 +30,10 @@ class LoginScreen extends Component {
         StatusBar.setBarStyle('light-content',true);
     }
 
+    _onPressLoginButton(){
+      this.props.onLoginButtonClick(1,'Evan');
+    }
+
     _onPressForgotPasswordButton(){
 
     }
@@ -71,7 +75,7 @@ class LoginScreen extends Component {
                     />
                     <TouchableHighlight
                         style={styles.loginButton}
-                        onPress={() => this.props.onLoginButtonClick(1,'Evan')}>
+                        onPress={this._onPressLoginButton.bind(this)}>
                         <Text style={styles.loginText}>{this.props.isUserLoggedIn ? 'Sign-out' : 'Sign-in'}</Text>
                     </TouchableHighlight>
                 </ScrollView>

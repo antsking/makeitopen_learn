@@ -2,20 +2,25 @@
  * Created by Evan on 24/09/2016.
  */
 'use strict'
-var { Provider } = require('react-redux');
+import {Provider} from 'react-redux';
 import React, {Component} from 'react';
-import { createStore } from 'redux';
+import { applyMiddleware,createStore } from 'redux';
 import appReducers from './reducers/index';
 import LoginScreenContainer from './login/loginScreenContainer';
+import createLogger from 'redux-logger';
+import thunk from 'redux-thunk';
 
+const logger = createLogger();
+const createStoreWithMiddleware = applyMiddleware(thunk,logger)(createStore);
+const store = createStoreWithMiddleware(appReducers)
 
 
 function setup(){
     class Root extends Component {
         render() {
             return (
-                <Provider store={createStore(appReducers)}>
-                    <LoginScreenContainer />
+                <Provider store={store}>
+                    <LoginScreenContainer/>
                 </Provider>
             );
         }
