@@ -15,22 +15,24 @@ class LoginScreenContainer extends Component{
   render() {
     return (
       <LoginScreen
-        isUserLoggedIn={this.props.userStatus}
-        onLoginButtonClick={this.props.loginAction}>
+        isLoggedIn={this.props.userStatus}
+        onLoginButtonClick={this.props.loginAction}
+        >
       </LoginScreen>
     );
   }
 }
-const mapStateToProps = (state) => {
+const stateToProps = (state) => {
   return {
-    userStatus: state.isLoggedIn
+    userStatus: state.user.isLoggedIn,
+    count:state.user.count
   }
-};
+}
 
-const mapDispatchToProps = (dispatch) => {
+const dispatchToProps = (dispatch) => {
   return bindActionCreators({
-    loginAction
+    loginAction:loginAction
     },dispatch)
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(LoginScreenContainer);
+export default connect(stateToProps,dispatchToProps)(LoginScreenContainer);

@@ -12,7 +12,7 @@ import {
     StatusBar,
     TextInput,
     ScrollView,
-    TouchableHighlight
+    TouchableOpacity
 } from 'react-native';
 
 var { loginAction } = require('../actions/login');
@@ -30,11 +30,11 @@ class LoginScreen extends Component {
         StatusBar.setBarStyle('light-content',true);
     }
 
-    _onPressLoginButton(){
+    _onPressLoginButton(event){
       this.props.onLoginButtonClick(1,'Evan');
     }
 
-    _onPressForgotPasswordButton(){
+    _onPressForgotPasswordButton(event){
 
     }
 
@@ -73,18 +73,17 @@ class LoginScreen extends Component {
                     <View
                         style={styles.seperatorLine}
                     />
-                    <TouchableHighlight
+                    <TouchableOpacity
                         style={styles.loginButton}
                         onPress={this._onPressLoginButton.bind(this)}>
-                        <Text style={styles.loginText}>{this.props.isUserLoggedIn ? 'Sign-out' : 'Sign-in'}</Text>
-                    </TouchableHighlight>
+                        <Text style={styles.loginText}>{this.props.isLoggedIn ? 'Sign-out': 'Sign-in'}</Text>
+                    </TouchableOpacity>
                 </ScrollView>
-                <TouchableHighlight
+                <TouchableOpacity
                     style={styles.forgotPasswordButton}
                     onPress={this._onPressForgotPasswordButton}>
                     <Text style={styles.forgotPasswordText}>Forgot your username or password</Text>
-                </TouchableHighlight>
-
+                </TouchableOpacity>
             </Image>
         );
     }
@@ -142,8 +141,8 @@ const styles = StyleSheet.create({
 });
 
 LoginScreen.propTypes = {
-    isUserLoggedIn:React.PropTypes.bool,
-    onLoginButtonClick:React.PropTypes.func
+    isLoggedIn:React.PropTypes.bool,
+    onLoginButtonClick:React.PropTypes.func,
 };
 
 

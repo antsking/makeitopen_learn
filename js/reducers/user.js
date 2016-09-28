@@ -8,7 +8,8 @@ import {LOGIN} from '../actions/login';
 const initialState ={
     isLoggedIn: false,
     id: null,
-    name: null
+    name: null,
+    count:0
 };
 
 
@@ -18,7 +19,8 @@ function user(state = initialState, action) {
             ...state,
             isLoggedIn: true,
             id: action.id,
-            name: action.name
+            name: action.name,
+            count:state.count+1
         };
     }else {
         return initialState;

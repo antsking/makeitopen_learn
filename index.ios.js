@@ -4,6 +4,6 @@
 
 import {AppRegistry} from 'react-native';
 
-const setup = require('./js/setup');
+import setup from './js/setup';
 
 AppRegistry.registerComponent('MediaMonitor', setup);
