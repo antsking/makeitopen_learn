@@ -1,5 +1,6 @@
 /**
  * Created by Evan on 24/09/2016.
+ * @flow
  */
 'use strict'
 
@@ -20,10 +21,6 @@ var { loginAction } = require('../actions/login');
 class LoginScreen extends Component {
     constructor(props){
         super(props)
-        this.state={
-            username:'',
-            password:''
-        }
     }
 
     componentDidMount(){
@@ -31,11 +28,21 @@ class LoginScreen extends Component {
     }
 
     _onPressLoginButton(event){
-      this.props.onLoginButtonClick(1,'Evan');
+      if(this.props.username !== '' && this.props.password !== ''){
+            this.props.userLogin(this.props.username,this.props.password);
+      }
     }
 
     _onPressForgotPasswordButton(event){
 
+    }
+
+    _handleUsernameInput(event){
+      this.props.setUserName(event.nativeEvent.text.trim())
+    }
+
+    _handleUserpasswordInput(event){
+      this.props.setUserPassword(event.nativeEvent.text.trim())
     }
 
     render() {
@@ -50,12 +57,11 @@ class LoginScreen extends Component {
                     />
                     <TextInput
                         style={styles.emailTextInput}
-                        onchangeText={(username) => {
-                            this.state.username = username;
-                        }}
+                        onChange={this._handleUsernameInput.bind(this)}
                         placeholder='Username'
                         placeholderTextColor="white"
-                        value={this.state.username}
+                        autoCorrect={false}
+                        autoCapitalize='none'
                     />
                     <View
                         style={styles.seperatorLine}
@@ -63,12 +69,9 @@ class LoginScreen extends Component {
                     <TextInput
                         style={styles.passwordTextInput}
                         secureTextEntry={true}
-                        onchangeText={(password) => {
-                            this.state.password = password;
-                        }}
+                        onChange={this._handleUserpasswordInput.bind(this)}
                         placeholder='Password'
                         placeholderTextColor="white"
-                        value={this.state.password}
                     />
                     <View
                         style={styles.seperatorLine}
@@ -76,7 +79,7 @@ class LoginScreen extends Component {
                     <TouchableOpacity
                         style={styles.loginButton}
                         onPress={this._onPressLoginButton.bind(this)}>
-                        <Text style={styles.loginText}>{this.props.isLoggedIn ? 'Sign-out': 'Sign-in'}</Text>
+                        <Text style={styles.loginText}>Sign-in</Text>
                     </TouchableOpacity>
                 </ScrollView>
                 <TouchableOpacity
@@ -141,8 +144,11 @@ const styles = StyleSheet.create({
 });
 
 LoginScreen.propTypes = {
-    isLoggedIn:React.PropTypes.bool,
-    onLoginButtonClick:React.PropTypes.func,
+    userLogin:React.PropTypes.func,
+    username:React.PropTypes.string,
+    password:React.PropTypes.string,
+    setUserName:React.PropTypes.func,
+    setUserPassword:React.PropTypes.func
 };
 
 

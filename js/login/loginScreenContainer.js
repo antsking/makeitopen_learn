@@ -4,7 +4,7 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux';
 import LoginScreen from './LoginScreen';
-import {loginAction} from '../actions/login'
+import {setUserName,setUserPassword,userLogin} from '../actions/login'
 import {bindActionCreators} from 'redux';
 
 class LoginScreenContainer extends Component{
@@ -15,8 +15,11 @@ class LoginScreenContainer extends Component{
   render() {
     return (
       <LoginScreen
-        isLoggedIn={this.props.userStatus}
-        onLoginButtonClick={this.props.loginAction}
+        userLogin={this.props.userLogin}
+        username={this.props.username}
+        password={this.props.password}
+        setUserName={this.props.setUserName}
+        setUserPassword={this.props.setUserPassword}
         >
       </LoginScreen>
     );
@@ -24,14 +27,14 @@ class LoginScreenContainer extends Component{
 }
 const stateToProps = (state) => {
   return {
-    userStatus: state.user.isLoggedIn,
-    count:state.user.count
+    username:state.user.username,
+    password:state.user.password
   }
 }
 
 const dispatchToProps = (dispatch) => {
   return bindActionCreators({
-    loginAction:loginAction
+    userLogin,setUserName,setUserPassword
     },dispatch)
 }
 

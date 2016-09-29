@@ -3,25 +3,33 @@
  */
 'use strict'
 
-import {LOGIN} from '../actions/login';
+import {USER_LOGIN_SUCCESS,USER_LOGIN_FAILED,SET_USER_NAME,SET_USER_PASSWORD} from '../actions/login';
 
 const initialState ={
     isLoggedIn: false,
-    id: null,
-    name: null,
-    count:0
+    token:null,
+    username:null,
+    password:null
 };
 
 
 function user(state = initialState, action) {
-    if (action.type == LOGIN){
+    if (action.type == USER_LOGIN_SUCCESS){
         return{
             ...state,
             isLoggedIn: true,
-            id: action.id,
-            name: action.name,
-            count:state.count+1
+            token:action.token
         };
+    }else if (action.type == SET_USER_NAME){
+      return{
+        ...state,
+        username:action.username
+      }
+    }else if (action.type == SET_USER_PASSWORD){
+      return{
+        ...state,
+        password:action.password
+      }
     }else {
         return initialState;
     }
