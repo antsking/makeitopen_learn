@@ -16,8 +16,33 @@ const userLogin = (name,password) => (dispatch) => _authRequest(dispatch,name,pa
 const _loginSuccess = (token) => ({type:USER_LOGIN_SUCCESS,token});
 const _loginFailed = (msg) => ({type:USER_LOGIN_FAILED,msg});
 const _authRequest = (dispatch,name,password) =>{
+  var params = {
+    username: name,
+    password: password,
+  };
+  var formBody = [];
+  for (var property in params) {
+    var encodedKey = encodeURIComponent(property);
+    var encodedValue = encodeURIComponent(params[property]);
+    formBody.push(encodedKey + "=" + encodedValue);
+  }
+  formBody = formBody.join("&");
 
-
+  fetch('https://services.mediaportal.com/V1.0/iam/login', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: formBody
+  })
+  .then((response) => response.json())
+      .then((responseJson) => {
+        dispatch(_loginSuccess(responseJson.token));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 };
 
 
