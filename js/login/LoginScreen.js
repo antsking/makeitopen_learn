@@ -15,8 +15,9 @@ import {
     ScrollView,
     TouchableOpacity
 } from 'react-native';
-
-var { loginAction } = require('../actions/login');
+import {setUserName,setUserPassword,userLogin} from '../actions/login'
+import {bindActionCreators} from 'redux';
+import { connect } from 'react-redux'
 
 class LoginScreen extends Component {
     constructor(props){
@@ -151,5 +152,17 @@ LoginScreen.propTypes = {
     setUserPassword:React.PropTypes.func
 };
 
+const stateToProps = (state) => {
+  return {
+    username:state.user.username,
+    password:state.user.password
+  }
+}
 
-module.exports = LoginScreen;
+const dispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    userLogin,setUserName,setUserPassword
+    },dispatch)
+}
+
+module.exports = connect(stateToProps,dispatchToProps)(LoginScreen)

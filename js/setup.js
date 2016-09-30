@@ -6,7 +6,7 @@ import {Provider} from 'react-redux';
 import React, {Component} from 'react';
 import { applyMiddleware,createStore } from 'redux';
 import appReducers from './reducers/index';
-import LoginScreenContainer from './login/loginScreenContainer';
+import LoginScreen from './login/LoginScreen'
 import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
 
@@ -20,7 +20,7 @@ function setup(){
         render() {
             return (
                 <Provider store={store}>
-                    <LoginScreenContainer/>
+                    <LoginScreen/>
                 </Provider>
             );
         }
