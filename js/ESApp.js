@@ -23,39 +23,34 @@ const navigationBarRouteMapper = {
 class ESApp extends Component {
   componentWillReceiveProps(nextProps){
     let rootNav = this.refs.rootNavigator;
-    if (nextProps.isLoggedIn) {
-      rootNav.push({
-                title: 'Main Screen ',
-                index: 1,
-              });
-    }
+
   }
   _renderScene(route,navigator){
     if (route.index === 0){
-      return <LoginScreen/>
-    }else if (route.index === 1) {
       return <ESTabBarScreen/>
     }
   }
 
   render() {
-    let navBarBackgroundColor = this.props.isLoggedIn ? {backgroundColor: 'gray'} : {backgroundColor: 'transparent'};
-    return (
-      <Navigator
-        ref='rootNavigator'
-        initialRoute={{title: 'Login Screen', index: 0}}
-        renderScene={this._renderScene.bind(this)}
-        navigationBar={
-          <Navigator.NavigationBar
-            routeMapper={navigationBarRouteMapper}
-            style={navBarBackgroundColor}
-            configureScene={(route, routeStack) =>
-              Navigator.SceneConfigs.PushFromRight}
-              />
-          }
-          />
+    if (this.props.isLoggedIn) {
+      return(
+        <Navigator
+            ref='rootNavigator'
+            initialRoute={{title: 'Main Screen', index: 0}}
+            renderScene={this._renderScene.bind(this)}
+            navigationBar={
+              <Navigator.NavigationBar
+                routeMapper={navigationBarRouteMapper}
+                style={{backgroundColor:'#F7F7F7'}}
+                configureScene={(route, routeStack) =>
+                  Navigator.SceneConfigs.PushFromRight}/>
+              }/>
       )
+    }else{
+      return <LoginScreen/>
     }
+
+  }
 };
 ESApp.propTypes = {
     isLoggedIn:React.PropTypes.bool

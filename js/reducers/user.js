@@ -28,12 +28,14 @@ function user(state = initialState, action) {
     case SET_USER_NAME:
       return{
         ...state,
-        username:action.username
+        username:action.username,
+        errorMessage:null
       };
     case SET_USER_PASSWORD:
       return{
         ...state,
-        password:action.password
+        password:action.password,
+        errorMessage:null
       };
     case USER_LOGIN_STARTED:
       return{

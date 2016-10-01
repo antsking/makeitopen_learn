@@ -23,7 +23,7 @@ class ESTabBarScreen extends Component {
     }
 
     componentDidMount(){
-
+        StatusBar.setBarStyle('default',true);
     }
 
     render() {
