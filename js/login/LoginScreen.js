@@ -13,7 +13,9 @@ import {
     StatusBar,
     TextInput,
     ScrollView,
-    TouchableOpacity
+    TouchableOpacity,
+    ActivityIndicator,
+    Alert
 } from 'react-native';
 import {setUserName,setUserPassword,userLogin} from '../actions/login'
 import {bindActionCreators} from 'redux';
@@ -23,6 +25,20 @@ class LoginScreen extends Component {
     constructor(props){
         super(props)
     }
+
+    componentWillReceiveProps(nextProps){
+      if (nextProps.errorMessage) {
+        Alert.alert(
+          'Error',
+          nextProps.errorMessage,
+          [
+            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ]
+        );
+      }
+    }
+
 
     componentDidMount(){
         StatusBar.setBarStyle('light-content',true);
@@ -82,6 +98,9 @@ class LoginScreen extends Component {
                         onPress={this._onPressLoginButton.bind(this)}>
                         <Text style={styles.loginText}>Sign-in</Text>
                     </TouchableOpacity>
+                    <ActivityIndicator
+                      animating={this.props.isAuthorizing}
+                    />
                 </ScrollView>
                 <TouchableOpacity
                     style={styles.forgotPasswordButton}
@@ -149,13 +168,18 @@ LoginScreen.propTypes = {
     username:React.PropTypes.string,
     password:React.PropTypes.string,
     setUserName:React.PropTypes.func,
-    setUserPassword:React.PropTypes.func
+    setUserPassword:React.PropTypes.func,
+    isAuthorizing:React.PropTypes.bool,
+    errorMessage:React.PropTypes.string
+
 };
 
 const stateToProps = (state) => {
   return {
     username:state.user.username,
-    password:state.user.password
+    password:state.user.password,
+    isAuthorizing:state.user.isAuthorizing,
+    errorMessage:state.user.errorMessage
   }
 }
 
