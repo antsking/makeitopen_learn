@@ -21,6 +21,7 @@ const navigationBarRouteMapper = {
 
 
 class ESApp extends Component {
+  /*
   componentWillReceiveProps(nextProps){
     let rootNav = this.refs.rootNavigator;
 
@@ -30,9 +31,11 @@ class ESApp extends Component {
       return <ESTabBarScreen/>
     }
   }
+  */
 
   render() {
     if (this.props.isLoggedIn) {
+      /*
       return(
         <Navigator
             ref='rootNavigator'
@@ -46,6 +49,8 @@ class ESApp extends Component {
                   Navigator.SceneConfigs.PushFromRight}/>
               }/>
       )
+      */
+      return <ESTabBarScreen/>
     }else{
       return <LoginScreen/>
     }

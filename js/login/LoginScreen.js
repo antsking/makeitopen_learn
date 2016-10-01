@@ -15,9 +15,10 @@ import {
     ScrollView,
     TouchableOpacity,
     ActivityIndicator,
-    Alert
+    Alert,
+    AsyncStorage
 } from 'react-native';
-import {setUserName,setUserPassword,userLogin} from '../actions/login'
+import {setUserName,setUserPassword,userLogin,USER_NAME_SAVED,USER_PASSWORD_SAVED} from '../actions/login'
 import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux'
 
@@ -40,8 +41,24 @@ class LoginScreen extends Component {
     }
 
 
-    componentDidMount(){
+    componentWillMount(){
         StatusBar.setBarStyle('light-content',true);
+        this._checkUser();
+    }
+
+    _checkUser(){
+      AsyncStorage.multiGet([USER_NAME_SAVED,USER_PASSWORD_SAVED], (err, stores) => {
+            stores.map( (result, i, store) => {
+              let key = store[i][0];
+              let val = store[i][1];
+              console.log(key, val);
+            });
+            let user_name = stores[0][1];
+            let user_password = stores[1][1];
+            this.props.setUserName(user_name);
+            this.props.setUserPassword(user_password);
+            this.props.userLogin(user_name,user_password);
+          });
     }
 
     _onPressLoginButton(event){
@@ -79,6 +96,7 @@ class LoginScreen extends Component {
                         placeholderTextColor="white"
                         autoCorrect={false}
                         autoCapitalize='none'
+                        value={this.props.username}
                     />
                     <View
                         style={styles.seperatorLine}
@@ -89,6 +107,7 @@ class LoginScreen extends Component {
                         onChange={this._handleUserpasswordInput.bind(this)}
                         placeholder='Password'
                         placeholderTextColor="white"
+                        value={this.props.password}
                     />
                     <View
                         style={styles.seperatorLine}
