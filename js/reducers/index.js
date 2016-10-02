@@ -7,7 +7,8 @@
 var { combineReducers } = require('redux');
 
 const appReducers= combineReducers({
-    user: require('./user')
+    user: require('./user'),
+    navigation: require('./navigation')
 });
 
 module.exports = appReducers;

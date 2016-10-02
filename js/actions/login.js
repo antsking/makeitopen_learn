@@ -53,7 +53,6 @@ const _authRequest = (dispatch,name,password) =>{
             if (error) {
               console.log(err);
             }
-            
           });
           dispatch(_loginSuccess(responseJson.token));
         }else{

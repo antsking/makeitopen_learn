@@ -11,17 +11,38 @@ import {
   Text,
   View,
 } from 'react-native';
+import CoverageNavigator from '../coverage/CoverageNavigator';
+import {
+  COVERAGE_TAB,
+  ANALYTICS_TAB,
+  REPORTS_TAB,
+  NOTIFICATION_TAB,
+  MORE_TAB,
+  switchTab
+} from '../actions/navigation';
+import {bindActionCreators} from 'redux';
+import { connect } from 'react-redux'
 
 class ESTabBarScreen extends React.Component {
 
-  _renderContent = (color: string, pageText: string, num?: number) => {
+  _renderCoverageSection(){
+    return <CoverageNavigator/>
+  }
+
+  _renderContent = (color: string) => {
     return (
       <View style={[styles.tabContent, {backgroundColor: color}]}>
-        <Text style={styles.tabText}>Hello</Text>
-        <Text style={styles.tabText}>World</Text>
+
       </View>
     );
   };
+
+  _onTabSelect(tab) {
+    if (this.props.tab !== tab) {
+      this.props.switchTab(tab);
+    }
+  }
+
 
   render() {
     return (
@@ -32,47 +53,37 @@ class ESTabBarScreen extends React.Component {
         <TabBarIOS.Item
           title="Coverage"
           icon={require('./img/coverage.png')}
-          selected={true}
-          onPress={() => {
-
-          }}>
-          {this._renderContent('#414A8C', 'Blue Tab')}
+          selected={this.props.tab === COVERAGE_TAB}
+          onPress={this._onTabSelect.bind(this, COVERAGE_TAB)}>
+          {this._renderCoverageSection()}
         </TabBarIOS.Item>
         <TabBarIOS.Item
           title="Analytics"
           icon={require('./img/analytics.png')}
-          selected={false}
-          onPress={() => {
-
-          }}>
-          {this._renderContent('#414A8C', 'Blue Tab')}
+          selected={this.props.tab === ANALYTICS_TAB}
+          onPress={this._onTabSelect.bind(this, ANALYTICS_TAB)}>
+          {this._renderContent('#414A8C')}
         </TabBarIOS.Item>
         <TabBarIOS.Item
           title="Reports"
           icon={require('./img/reports.png')}
-          selected={false}
-          onPress={() => {
-
-          }}>
-          {this._renderContent('#414A8C', 'Blue Tab')}
+          selected={this.props.tab === REPORTS_TAB}
+          onPress={this._onTabSelect.bind(this, REPORTS_TAB)}>
+          {this._renderContent('#414A8C')}
         </TabBarIOS.Item>
         <TabBarIOS.Item
           title="Notification"
           icon={require('./img/notification.png')}
-          selected={false}
-          onPress={() => {
-
-          }}>
-          {this._renderContent('#414A8C', 'Blue Tab')}
+          selected={this.props.tab === NOTIFICATION_TAB}
+          onPress={this._onTabSelect.bind(this, NOTIFICATION_TAB)}>
+          {this._renderContent('#414A8C')}
         </TabBarIOS.Item>
         <TabBarIOS.Item
           title="More"
           icon={require('./img/more.png')}
-          selected={false}
-          onPress={() => {
-
-          }}>
-          {this._renderContent('#414A8C', 'Blue Tab')}
+          selected={this.props.tab === MORE_TAB}
+          onPress={this._onTabSelect.bind(this, MORE_TAB)}>
+          {this._renderContent('#414A8C')}
         </TabBarIOS.Item>
 
       </TabBarIOS>
@@ -91,5 +102,22 @@ var styles = StyleSheet.create({
   },
 });
 
+ESTabBarScreen.propTypes = {
+    tab:React.PropTypes.string,
+    switchTab:React.PropTypes.func
+};
 
-module.exports = ESTabBarScreen
+
+const stateToProps = (state) => {
+  return {
+    tab:state.navigation.tab
+  }
+}
+
+const dispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    switchTab
+    },dispatch)
+}
+
+module.exports = connect(stateToProps,dispatchToProps)(ESTabBarScreen)
