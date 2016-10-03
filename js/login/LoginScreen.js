@@ -16,7 +16,9 @@ import {
     TouchableOpacity,
     ActivityIndicator,
     Alert,
-    AsyncStorage
+    AsyncStorage,
+    Animated,
+    Dimensions
 } from 'react-native';
 import {setUserName,setUserPassword,userLogin,USER_NAME_SAVED,USER_PASSWORD_SAVED} from '../actions/login'
 import {bindActionCreators} from 'redux';
@@ -24,7 +26,10 @@ import { connect } from 'react-redux'
 
 class LoginScreen extends Component {
     constructor(props){
-        super(props)
+        super(props);
+        this.state = {
+          anim: new Animated.Value(0)
+        };
     }
 
     componentWillReceiveProps(nextProps){
@@ -43,7 +48,20 @@ class LoginScreen extends Component {
 
     componentWillMount(){
         StatusBar.setBarStyle('light-content',true);
-        this._checkUser();
+    }
+
+    componentWillUnmount(){
+      this.state.anim.removeAllListeners();
+    }
+
+    componentDidMount(){
+      Animated.timing(this.state.anim,{toValue:1500,duration:1500}).start();
+      this.state.anim.addListener(({value}) => {
+        //console.log(value);
+        if (value === 1500) {
+          this._checkUser();
+        }
+      });
     }
 
     _checkUser(){
@@ -79,16 +97,36 @@ class LoginScreen extends Component {
       this.props.setUserPassword(event.nativeEvent.text.trim())
     }
 
+    _fadeIn(delay, from = 0){
+      const {anim} = this.state;
+      return {
+        opacity: anim.interpolate({
+            inputRange:[delay,Math.min(delay+500,1500)],
+            outputRange:[0,1],
+            extrapolate:'clamp',
+        }),
+        transform:[{
+          translateY: anim.interpolate({
+            inputRange:[delay,Math.min(delay+500,1500)],
+            outputRange:[from,0],
+            extrapolate:'clamp',
+          }),
+        }],
+      };
+    }
+
     render() {
         return (
             <Image
                 style={styles.container}
                 source={require('./img/loginBG.png')}>
                 <ScrollView>
-                    <Image
-                        style={styles.logo}
-                        source={require('./img/logo.png')}
-                    />
+                    <View style={styles.logo}>
+                      <Animated.Image
+                          style={this._fadeIn(0)}
+                          source={require('./img/logo.png')}
+                      />
+                    </View>
                     <TextInput
                         style={styles.emailTextInput}
                         onChange={this._handleUsernameInput.bind(this)}
@@ -115,7 +153,7 @@ class LoginScreen extends Component {
                     <TouchableOpacity
                         style={styles.loginButton}
                         onPress={this._onPressLoginButton.bind(this)}>
-                        <Text style={styles.loginText}>Sign-in</Text>
+                        <Animated.Text style={[styles.loginText,this._fadeIn(500,-10)]}>Sign-in</Animated.Text>
                     </TouchableOpacity>
                     <ActivityIndicator
                       animating={this.props.isAuthorizing}
@@ -124,7 +162,7 @@ class LoginScreen extends Component {
                 <TouchableOpacity
                     style={styles.forgotPasswordButton}
                     onPress={this._onPressForgotPasswordButton}>
-                    <Text style={styles.forgotPasswordText}>Forgot your username or password</Text>
+                    <Animated.Text style={[styles.forgotPasswordText,this._fadeIn(1000,10)]}>Forgot your username or password</Animated.Text>
                 </TouchableOpacity>
             </Image>
         );
